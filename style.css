@@ -1,3 +1,4 @@
+/* General Reset */
 * {
   margin: 0;
   padding: 0;
@@ -5,79 +6,447 @@
 }
 
 body {
-  background: #1e1e2f;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  color: #f5f5f5;
+  background: radial-gradient(circle at top right, #1f1510 0%, #0e0e15 100%);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  color: #f5f5fa;
+  min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100vh;
+  overflow-x: hidden;
 }
 
+/* Container & Premium Card */
 .container {
-  max-width: 400px;
+  max-width: 800px;
   width: 100%;
   padding: 20px;
+  animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .card {
-  background: #2a2a40;
-  border-radius: 20px;
-  padding: 30px;
-  box-shadow: 0 0 15px rgba(255, 138, 0, 0.3);
+  background: rgba(26, 26, 42, 0.65);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 153, 0, 0.15);
+  border-radius: 24px;
+  padding: 35px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 
+              0 0 50px rgba(255, 153, 0, 0.05);
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255, 153, 0, 0.03) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+/* Typography */
+header {
   text-align: center;
+  margin-bottom: 25px;
 }
 
-.card h1 {
-  font-size: 28px;
+.logo {
+  font-size: 32px;
+  font-weight: 800;
   color: #ff9900;
-  margin-bottom: 10px;
+  letter-spacing: -0.5px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
 }
 
-.card p {
+.subtitle {
   font-size: 14px;
-  color: #ccc;
-  margin-bottom: 20px;
+  color: #9a9ab0;
+}
+
+/* Form Styles */
+.qr-creator {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 30px;
+  align-items: center;
+}
+
+.creator-left {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.creator-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+@media (max-width: 768px) {
+  .container {
+    max-width: 480px;
+  }
+  .qr-creator {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.input-group label,
+.control-item label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #ff9900;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
 }
 
 input[type="text"] {
   width: 100%;
-  padding: 12px 15px;
-  border: none;
-  border-radius: 10px;
-  font-size: 14px;
-  margin-bottom: 15px;
-  background-color: #3a3a55;
+  padding: 14px 16px;
+  background: #111122;
+  border: 1px solid rgba(255, 153, 0, 0.15);
+  border-radius: 12px;
   color: #fff;
+  font-size: 15px;
   outline: none;
+  transition: all 0.3s ease;
 }
 
-button {
-  width: 100%;
+input[type="text"]:focus {
+  border-color: #ff9900;
+  box-shadow: 0 0 12px rgba(255, 153, 0, 0.25);
+  background: #15152a;
+}
+
+/* Controls Grid */
+.controls-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 15px;
+}
+
+.control-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+input[type="number"] {
   padding: 12px;
-  border: none;
-  border-radius: 10px;
-  font-size: 16px;
-  background: #ff9900;
-  color: #1e1e2f;
-  font-weight: bold;
-  cursor: pointer;
-  transition: 0.3s ease;
+  background: #111122;
+  border: 1px solid rgba(255, 153, 0, 0.15);
+  border-radius: 12px;
+  color: #fff;
+  font-size: 15px;
+  outline: none;
+  transition: all 0.3s ease;
 }
 
-button:hover {
-  background: #ffaa33;
+input[type="number"]:focus {
+  border-color: #ff9900;
+  box-shadow: 0 0 8px rgba(255, 153, 0, 0.2);
+}
+
+input[type="color"] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 48px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+input[type="color"]::-webkit-color-swatch {
+  border: 1px solid rgba(255, 153, 0, 0.25);
+  border-radius: 12px;
+}
+
+input[type="color"]::-moz-color-swatch {
+  border: 1px solid rgba(255, 153, 0, 0.25);
+  border-radius: 12px;
+}
+
+/* QR Code Output container */
+.qr-output-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  background: rgba(17, 17, 34, 0.4);
+  border-radius: 16px;
+  border: 1px dashed rgba(255, 153, 0, 0.1);
+  margin: 10px 0;
 }
 
 .qr-output {
-  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #fff;
+  padding: 16px;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease;
 }
 
-.qr-output img {
+.qr-output:hover {
+  transform: scale(1.02);
+}
+
+#qrCanvas {
   max-width: 100%;
   height: auto;
-  border: 1px solid #444;
-  padding: 10px;
-  border-radius: 10px;
-  background: #fff;
+  display: block;
+}
+
+/* Download Panel */
+.download-panel {
+  display: flex;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.select-wrapper {
+  flex: 1;
+  position: relative;
+}
+
+select {
+  width: 100%;
+  padding: 14px 16px;
+  background: #111122;
+  border: 1px solid rgba(255, 153, 0, 0.2);
+  border-radius: 12px;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  outline: none;
+  cursor: pointer;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ff9900' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  background-size: 16px;
+  padding-right: 40px;
+}
+
+select:focus {
+  border-color: #ff9900;
+  box-shadow: 0 0 8px rgba(255, 153, 0, 0.2);
+}
+
+.download-btn {
+  padding: 14px 24px;
+  background: linear-gradient(135deg, #ff9900 0%, #e65c00 100%);
+  color: #0e0e15;
+  border: none;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(255, 153, 0, 0.3);
+}
+
+.download-btn:hover {
+  background: linear-gradient(135deg, #ffaa33 0%, #ff6600 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 153, 0, 0.4);
+}
+
+.download-btn:active {
+  transform: translateY(0);
+}
+
+/* Modal Dialog Overlay */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(10, 10, 15, 0.9);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  opacity: 1;
+  transition: opacity 0.4s ease;
+}
+
+.modal-content {
+  background: rgba(26, 26, 42, 0.95);
+  border: 1px solid rgba(255, 153, 0, 0.25);
+  border-radius: 28px;
+  max-width: 440px;
+  width: 90%;
+  padding: 40px;
+  text-align: center;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5),
+              0 0 80px rgba(255, 153, 0, 0.1);
+  transform: scale(1);
+  animation: modalScaleUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.modal-icon {
+  font-size: 64px;
+  margin-bottom: 20px;
+  animation: bounce 2s infinite ease-in-out;
+}
+
+.modal-content h2 {
+  font-size: 26px;
+  color: #ff9900;
+  margin-bottom: 12px;
+  font-weight: 800;
+}
+
+.modal-content p {
+  font-size: 15px;
+  color: #ccc;
+  line-height: 1.6;
+  margin-bottom: 30px;
+}
+
+.modal-btn {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, #ff9900 0%, #e65c00 100%);
+  color: #0e0e15;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.modal-btn:hover {
+  background: linear-gradient(135deg, #ffaa33 0%, #ff6600 100%);
+  box-shadow: 0 4px 15px rgba(255, 153, 0, 0.3);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes modalScaleUp {
+  from { opacity: 0; transform: scale(0.92); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-10px) rotate(5deg); }
+}
+
+/* Native Print media queries for direct-to-PDF export */
+@media print {
+  body, html {
+    background: #ffffff !important;
+    color: #000000 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    overflow: hidden !important;
+  }
+
+  /* Hide absolutely everything on the web layout */
+  body > * {
+    display: none !important;
+  }
+
+  /* Expose and isolate the container and Canvas only */
+  .container {
+    display: block !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+  }
+
+  .card {
+    display: block !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+  }
+
+  .qr-creator {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    width: 100% !important;
+    height: 100% !important;
+  }
+
+  .qr-output-container {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+  }
+
+  .qr-output {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    background: transparent !important;
+    width: 100% !important;
+    height: 100% !important;
+  }
+
+  #qrCanvas {
+    /* Set size of the printed QR on the PDF page */
+    width: 380px !important;
+    height: 380px !important;
+    max-width: 380px !important;
+    max-height: 380px !important;
+    position: absolute !important;
+    left: 50% !important;
+    top: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    image-rendering: pixelated !important;
+  }
 }

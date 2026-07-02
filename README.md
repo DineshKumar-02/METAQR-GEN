@@ -37,4 +37,5 @@ MetaQR is a simple, sleek, MetaMask-inspired QR Code Generator built using HTML,
 metamask-qr/
 ├── index.html # Main webpage
 ├── style.css # Styling and theme
-└── script.js # QR logic
+└── script.js # QR logic 
+

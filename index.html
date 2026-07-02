@@ -1,23 +1,78 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>MetaQR - QR Code Generator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MetaQR - Offline QR Code Generator</title>
   <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
-  <div class="container">
-    <div class="card">
-      <h1>🦊 MetaQR</h1>
-      <p>Generate your secure QR code like a pro!</p>
-      <input type="text" id="inputText" placeholder="Paste your text or URL here" />
-      <button onclick="generateQR()">Generate QR</button>
-      <div class="qr-output">
-        <img id="qrImage" src="" alt="Your QR Code" />
-      </div>
+  <!-- Welcome Greeting Modal -->
+  <div id="welcomeModal" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-icon">🦊</div>
+      <h2>Welcome to MetaQR!</h2>
+      <p>Your privacy matters. Generate high-quality QR codes completely client-side. No CDNs, no external servers, 100%
+        offline and secure.</p>
+      <button id="dismissModalBtn" class="modal-btn">Get Started</button>
     </div>
   </div>
+
+  <div class="container">
+    <div class="card">
+      <header>
+        <h1 class="logo">🦊 MetaQR</h1>
+        <p class="subtitle">Secure, offline, and real-time QR generation</p>
+      </header>
+
+      <main class="qr-creator">
+        <div class="input-group">
+          <label for="inputText">URL or Text</label>
+          <input type="text" id="inputText" placeholder="Enter text or paste URL..." value="https://metamask.io"
+            autocomplete="off" />
+        </div>
+
+        <div class="controls-grid">
+          <div class="control-item">
+            <label for="qrSize">Size (px)</label>
+            <input type="number" id="qrSize" min="100" max="1000" value="250" step="50" />
+          </div>
+          <div class="control-item">
+            <label for="fgColor">Foreground</label>
+            <input type="color" id="fgColor" value="#ff9900" />
+          </div>
+          <div class="control-item">
+            <label for="bgColor">Background</label>
+            <input type="color" id="bgColor" value="#ffffff" />
+          </div>
+        </div>
+
+        <div class="qr-output-container">
+          <div class="qr-output">
+            <!-- Canvas for local QR code rendering -->
+            <canvas id="qrCanvas"></canvas>
+          </div>
+        </div>
+
+        <div class="download-panel">
+          <div class="select-wrapper">
+            <select id="downloadFormat">
+              <option value="png">PNG Image</option>
+              <option value="jpeg">JPEG Image</option>
+              <option value="pdf">PDF Document</option>
+            </select>
+          </div>
+          <button id="downloadBtn" class="download-btn">Download QR Code</button>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Include local offline QRious library -->
+  <script src="qrious.min.js"></script>
   <script src="script.js"></script>
 </body>
+
 </html>
