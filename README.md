@@ -4,6 +4,8 @@ MetaQR is a simple and beautiful QR Code Generator with a dark crypto-style desi
 
 This project is built using basic web files (HTML, CSS, and JavaScript) to make it **extremely easy for beginners to read, understand, and study**.
 
+🚀 **Live Demo:** [https://qrcode-gen-bydk.netlify.app/](https://qrcode-gen-bydk.netlify.app/)
+
 ---
 
 ## 🎨 Visual Preview
