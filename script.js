@@ -1,94 +1,54 @@
-/**
- * MetaQR Code Generator
- * Client-side offline generation & high-fidelity downloading logic.
- */
-
 document.addEventListener('DOMContentLoaded', () => {
-  // DOM Element References
+  // 1. Get references to the HTML elements
   const inputText = document.getElementById('inputText');
   const qrSize = document.getElementById('qrSize');
-  const fgColor = document.getElementById('fgColor');
-  const bgColor = document.getElementById('bgColor');
-  const qrCanvas = document.getElementById('qrCanvas');
-  
-  const welcomeModal = document.getElementById('welcomeModal');
-  const dismissModalBtn = document.getElementById('dismissModalBtn');
-  
+  const qrImg = document.getElementById('qrImg');
   const downloadFormat = document.getElementById('downloadFormat');
   const downloadBtn = document.getElementById('downloadBtn');
 
-  // Welcome Modal Logic with persistent dismiss using localStorage
-  if (localStorage.getItem('metaqr_welcome_dismissed')) {
-    welcomeModal.style.display = 'none';
-  } else {
-    welcomeModal.style.display = 'flex';
-  }
-
-  dismissModalBtn.addEventListener('click', () => {
-    // Fade out modal and mark dismissed
-    welcomeModal.style.opacity = '0';
-    setTimeout(() => {
-      welcomeModal.style.display = 'none';
-      localStorage.setItem('metaqr_welcome_dismissed', 'true');
-    }, 400);
-  });
-
-  // Initialize QRious Generator (offline/local canvas drawing)
-  const qr = new QRious({
-    element: qrCanvas,
-    value: inputText.value,
-    size: parseInt(qrSize.value) || 250,
-    foreground: fgColor.value,
-    background: bgColor.value,
-    level: 'H' // High error-correction capability
-  });
-
-  /**
-   * Reads control states and refreshes the canvas representation
-   */
+  // 2. Function to generate and update the QR code image URL
   function refreshQR() {
-    const textVal = inputText.value.trim();
+    // Get text value, fallback to 'https://metamask.io' if empty
+    const text = inputText.value.trim() || 'https://metamask.io';
+    // Get size value, fallback to 250px
+    const size = qrSize.value || 250;
     
-    // Set a neat fallback if the user clears the input
-    qr.value = textVal || 'https://metamask.io';
-    qr.size = parseInt(qrSize.value) || 250;
-    qr.foreground = fgColor.value;
-    qr.background = bgColor.value;
+    // Construct the API URL and set it as the src of the <img> tag
+    qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(text)}&size=${size}x${size}`;
   }
 
-  // Real-time Event Binding
-  inputText.addEventListener('input', refreshQR);
-  qrSize.addEventListener('input', refreshQR);
-  fgColor.addEventListener('input', refreshQR);
-  bgColor.addEventListener('input', refreshQR);
+  // 3. Listen for changes in input fields to update the QR code in real-time
+  [inputText, qrSize].forEach(el => el.addEventListener('input', refreshQR));
+  
+  // Render the initial QR code when the page loads
+  refreshQR();
 
-  // Download Trigger Handler
-  downloadBtn.addEventListener('click', () => {
-    const selectedFormat = downloadFormat.value;
-    const currentText = inputText.value.trim();
-    
-    // Construct a clean, alphanumeric file suffix based on input text
-    const suffix = currentText 
-      ? currentText.replace(/[^a-z0-9]/gi, '_').toLowerCase().substring(0, 20) 
-      : 'metaqr';
-    const timestamp = Date.now();
-    const filename = `qr_${suffix}_${timestamp}`;
+  // 4. Handle Download button click
+  downloadBtn.addEventListener('click', async () => {
+    const format = downloadFormat.value;
 
-    if (selectedFormat === 'png' || selectedFormat === 'jpeg') {
-      const mime = selectedFormat === 'png' ? 'image/png' : 'image/jpeg';
-      
-      // Extract data URL from active canvas rendering
-      const url = qrCanvas.toDataURL(mime);
-      
-      // Programmatically trigger a link download click
-      const downloadLink = document.createElement('a');
-      downloadLink.href = url;
-      downloadLink.download = `${filename}.${selectedFormat}`;
-      downloadLink.click();
-    } else if (selectedFormat === 'pdf') {
-      // Trigger native browser printer. 
-      // Print styles (@media print) isolate the canvas and hide web UI automatically.
+    if (format === 'pdf') {
+      // PDF Option: Open the print dialog (which allows saving as PDF)
       window.print();
+    } else {
+      // PNG Option: Download the image from the API
+      
+      // Step A: Fetch the image file from the external URL
+      const response = await fetch(qrImg.src);
+      // Step B: Convert the response into raw binary data (Blob)
+      const blob = await response.blob();
+      
+      // Step C: Create a temporary invisible <a> link in memory
+      const link = document.createElement('a');
+      // Step D: Create a local URL pointing to the binary Blob data
+      link.href = URL.createObjectURL(blob);
+      // Step E: Assign a filename with a unique timestamp
+      link.download = `qrcode_${Date.now()}.png`;
+      
+      // Step F: Simulate a click on the link to trigger browser download
+      link.click();
+      // Step G: Revoke the local URL to free up system memory
+      URL.revokeObjectURL(link.href);
     }
   });
 });
