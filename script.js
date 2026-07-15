@@ -1,54 +1,38 @@
 document.addEventListener('DOMContentLoaded', () => {
-  // 1. Get references to the HTML elements
+  // 1. Get the elements from the HTML page
   const inputText = document.getElementById('inputText');
   const qrSize = document.getElementById('qrSize');
   const qrImg = document.getElementById('qrImg');
   const downloadFormat = document.getElementById('downloadFormat');
   const downloadBtn = document.getElementById('downloadBtn');
 
-  // 2. Function to generate and update the QR code image URL
-  function refreshQR() {
-    // Get text value, fallback to 'https://metamask.io' if empty
+  // 2. This function updates the QR code image on the screen
+  function updateQRCode() {
+    // Get text value, use 'https://metamask.io' if empty
     const text = inputText.value.trim() || 'https://metamask.io';
-    // Get size value, fallback to 250px
+    // Get size value, use 250 as default
     const size = qrSize.value || 250;
     
-    // Construct the API URL and set it as the src of the <img> tag
+    // Get the QR code image from a free online API
     qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(text)}&size=${size}x${size}`;
   }
 
-  // 3. Listen for changes in input fields to update the QR code in real-time
-  [inputText, qrSize].forEach(el => el.addEventListener('input', refreshQR));
+  // 3. Update the QR code whenever the user types or changes the size
+  inputText.addEventListener('input', updateQRCode);
+  qrSize.addEventListener('input', updateQRCode);
   
-  // Render the initial QR code when the page loads
-  refreshQR();
+  // Show the QR code when the page first loads
+  updateQRCode();
 
-  // 4. Handle Download button click
-  downloadBtn.addEventListener('click', async () => {
-    const format = downloadFormat.value;
-
-    if (format === 'pdf') {
-      // PDF Option: Open the print dialog (which allows saving as PDF)
+  // 4. When the user clicks the "Download QR Code" button
+  downloadBtn.addEventListener('click', () => {
+    if (downloadFormat.value === 'pdf') {
+      // If PDF is selected, open the browser print page
       window.print();
     } else {
-      // PNG Option: Download the image from the API
-      
-      // Step A: Fetch the image file from the external URL
-      const response = await fetch(qrImg.src);
-      // Step B: Convert the response into raw binary data (Blob)
-      const blob = await response.blob();
-      
-      // Step C: Create a temporary invisible <a> link in memory
-      const link = document.createElement('a');
-      // Step D: Create a local URL pointing to the binary Blob data
-      link.href = URL.createObjectURL(blob);
-      // Step E: Assign a filename with a unique timestamp
-      link.download = `qrcode_${Date.now()}.png`;
-      
-      // Step F: Simulate a click on the link to trigger browser download
-      link.click();
-      // Step G: Revoke the local URL to free up system memory
-      URL.revokeObjectURL(link.href);
+      // If PNG is selected, open the QR image in a new tab so user can right-click and save it
+      window.open(qrImg.src, '_blank');
     }
   });
 });
+
