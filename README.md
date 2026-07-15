@@ -1,61 +1,41 @@
-# 🦊 MetaQR - Offline QR Code Generator
+# 🦊 MetaQR - Simple QR Code Generator
 
-MetaQR is a premium, MetaMask-inspired offline QR Code Generator. Built using pure vanilla web languages, it executes mathematical QR matrix calculations entirely client-side. No CDNs, no remote APIs, and no backend dependencies are used. Your data never leaves your computer, ensuring 100% privacy and security.
+MetaQR is a simple and beautiful QR Code Generator with a dark crypto-style design. 
+
+This project is built using basic web files (HTML, CSS, and JavaScript) to make it **extremely easy for beginners to read, understand, and study**.
 
 ---
 
 ## 🎨 Visual Preview
 
-### Welcome Greeting Modal
-![Welcome Modal](screenshots/welcome_modal.png)
-
-### Custom Generator Workspace (Landscape View)
-![Main UI Workspace](screenshots/final_ui_state.png)
+![MetaQR Workspace](screenshots/final_ui_state.png)
 
 ---
 
-## 🚀 Features
+## 🚀 Easy Features
 
-- **🔐 100% Local Privacy** – Generates QR codes offline in the browser. Zero network requests or external CDNs.
-- **🎨 Custom Styling & Colors** – Adjust Foreground and Background colors using native color pickers with a live-updating canvas.
-- **📐 Interactive Size Adjuster** – Fine-tune output dimensions in real time (supports high-resolution outputs up to 1000px).
-- **💾 Premium File Exports**:
-  - **PNG / JPEG**: Direct binary downloads.
-  - **PDF Export**: Triggers specialized print-styles (`@media print`) that isolate and center the high-definition canvas, allowing you to print or save the QR code as a clean single-page PDF document.
-- **🦊 Sleek Crypto UI** – Modern MetaMask-inspired dark palette layout, glassmorphic blur effects, hover glows, and responsive layout.
-- **⚡ Real-Time Render** – Redraws the QR canvas dynamically as you type or change configurations.
-- **👋 Welcome Popup Modal** – Greets users on their first load with an animation (dismissed state is persisted in `localStorage`).
+- **⚡ Real-Time Updates** – As you type in the text box, the QR code updates instantly.
+- **📐 Custom Size** – Adjust the height and width of the QR code using the size input box.
+- **💾 Fast Downloads** – Download your QR code directly as a **PNG Image** or save it as a **PDF Document** with one click.
+- **🦊 Crypto Theme** – Styled with a sleek, dark-orange layout inspired by crypto wallets.
 
 ---
 
-## 🔧 How It Works
+## 📂 Project Files Explained (For Beginners)
 
-1. Open the application. You are welcomed by the introductory pop-up.
-2. Enter text or paste a URL in the input field.
-3. Configure the output size (px), foreground color, and background color. The QR canvas updates **instantly** in real time.
-4. Select your preferred output format (`PNG`, `JPEG`, or `PDF`) from the dropdown.
-5. Click **"Download QR Code"** to save your files locally.
+Here are the 3 files that make this app run:
 
----
-
-## 🛠️ Tech Stack
-
-- **HTML5** – Structured semantic elements & Canvas element for local rendering.
-- **CSS3** – Styled with a dark glassmorphic grid system, custom animations, and native print media query overrides.
-- **JavaScript (ES6)** – Application state binding, event listeners, and download link injection.
-- **QRious Library** – A compact (approx. 5KB) client-side dependency included locally in [qrious.min.js](qrious.min.js) for drawing QR vectors on HTML5 Canvas.
+1. **`index.html`**
+   - The skeleton of the page. It sets up the title, text box for your URL/Text, a size input, a dropdown for format, and the button to download.
+2. **`index.css`**
+   - The design file. It gives the app its dark background, rounded corners, spacing, and glowing orange button. It also makes sure the app looks good on mobile screens.
+3. **`script.js`**
+   - The brain of the app. It watches when you type, requests a QR image from a free API, and handles downloading the image or printing it to a PDF file.
 
 ---
 
-## 📂 Project Structure
+## 🔧 How to Run it Locally
 
-```bash
-METAQR-GEN/
-├── index.html       # Main application layout and modal controls
-├── style.css        # MetaMask colors, animations, grid system, & print query overrides
-├── script.js        # Event listeners, dynamic updates, modal & download triggers
-├── qrious.min.js    # Local offline QR-generation library
-└── screenshots/     # Application visual preview screenshots
-    ├── welcome_modal.png
-    └── final_ui_state.png
-```
+1. Download or clone this folder.
+2. Double-click the **`index.html`** file.
+3. It will open directly in your web browser. No complex installations or servers are needed!
