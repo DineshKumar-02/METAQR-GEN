@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Study Guide - How MetaQR Works</title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 0 20px;
+      background-color: #fafafa;
+    }
+    .guide-card {
+      background: white;
+      border: 1px solid #e0e0e0;
+      border-radius: 12px;
+      padding: 40px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+    header {
+      text-align: center;
+      border-bottom: 2px solid #ff9900;
+      padding-bottom: 20px;
+      margin-bottom: 30px;
+    }
+    h1 { color: #ff9900; margin-bottom: 10px; }
+    h2 { color: #e65c00; margin-top: 30px; border-bottom: 1px solid #eee; padding-bottom: 8px; }
+    h3 { color: #333; margin-top: 20px; }
+    code {
+      background-color: #f4f4f9;
+      color: #d63384;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: monospace;
+      font-size: 0.9em;
+    }
+    pre {
+      background: #1e1e2e;
+      color: #cdd6f4;
+      padding: 15px;
+      border-radius: 8px;
+      overflow-x: auto;
+      font-family: monospace;
+      font-size: 0.9em;
+    }
+    .analogy-box {
+      background-color: #fff9e6;
+      border-left: 4px solid #ff9900;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 4px;
+    }
+    .analogy-box h4 { margin: 0 0 10px 0; color: #b36b00; }
+    .flowchart {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      background: #fdfdfd;
+      border: 1px dashed #ccc;
+      padding: 20px;
+      border-radius: 8px;
+      margin: 20px 0;
+    }
+    .flow-step {
+      text-align: center;
+      background: #fff;
+      border: 1px solid #ff9900;
+      padding: 10px;
+      border-radius: 6px;
+      width: 25%;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    .arrow { font-size: 24px; color: #ff9900; }
+    .footer {
+      text-align: center;
+      margin-top: 40px;
+      font-size: 0.85em;
+      color: #777;
+    }
+    @media print {
+      body { background-color: white; margin: 0; padding: 0; max-width: 100%; }
+      .guide-card { border: none; box-shadow: none; padding: 0; }
+      pre { background: #f4f4f9; color: #000; border: 1px solid #ccc; page-break-inside: avoid; }
+      h2 { page-break-after: avoid; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="guide-card">
+    <header>
+      <h1>🦊 MetaQR Study Guide</h1>
+      <p>A Beginner-Friendly Guide to How the MetaQR App Works</p>
+      <p style="font-size: 0.9em; color: #666; font-style: italic;">Tip: Open this in your browser and press <b>Ctrl + P</b> to save it as a PDF!</p>
+    </header>
+
+    <h2>1. The Big Picture 🗺️</h2>
+    <p>This project is built using the three core building blocks of the web: <strong>HTML</strong>, <strong>CSS</strong>, and <strong>JavaScript</strong>. Here is how they collaborate:</p>
+    <ul>
+      <li><strong>HTML (The Skeleton):</strong> Defines what elements are on the page (the input fields, the title, the QR image box, and the buttons).</li>
+      <li><strong>CSS (The Styling):</strong> Makes it look beautiful. It sets the dark gradient background, colors, layout columns, and the glowing buttons.</li>
+      <li><strong>JavaScript (The Brain):</strong> Adds behavior. It listens to what you type, sends it to a server to make a QR code, and triggers the download or print actions.</li>
+    </ul>
+
+    <div class="flowchart">
+      <div class="flow-step">
+        <strong>User Input</strong><br>
+        <span style="font-size: 0.8em; color: #666;">Types text or size</span>
+      </div>
+      <div class="arrow">➡️</div>
+      <div class="flow-step">
+        <strong>JavaScript logic</strong><br>
+        <span style="font-size: 0.8em; color: #666;">Forms API URL</span>
+      </div>
+      <div class="arrow">➡️</div>
+      <div class="flow-step">
+        <strong>Browser Image</strong><br>
+        <span style="font-size: 0.8em; color: #666;">Displays QR Code</span>
+      </div>
+    </div>
+
+    <h2>2. How QR Code Generation Works ⚙️</h2>
+    <p>Instead of using complex local files to calculate and draw a QR matrix mathematically, this app uses a free public **API** (Application Programming Interface).</p>
+    
+    <div class="analogy-box">
+      <h4>🍔 The Restaurant Analogy (What is an API?)</h4>
+      <p>Think of an API like ordering food at a restaurant:</p>
+      <ol>
+        <li><strong>You (the Browser)</strong> are the customer. You tell the waiter what you want (your text and size).</li>
+        <li><strong>The API URL</strong> is the order ticket written by the waiter. It says exactly: <em>"We need a QR image containing 'metamask.io' at size 250px."</em></li>
+        <li><strong>The API Server</strong> is the kitchen. It processes your request, generates the QR code image, and sends it back to your table (displays it on the screen).</li>
+      </ol>
+    </div>
+
+    <p>In `script.js`, the code constructs this order ticket URL dynamically:</p>
+    <pre>
+qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(text)}&size=${size}x${size}`;</pre>
+    <p>What this does:</p>
+    <ul>
+      <li><code>data=...</code> holds the text you want inside the QR code.</li>
+      <li><code>size=...</code> specifies the width and height (e.g., <code>250x250</code>).</li>
+      <li><code>encodeURIComponent(text)</code> is a built-in helper that changes special characters (like <code>?</code>, <code>&</code>, or spaces) into a format safe for URLs (for example, a space becomes <code>%20</code>).</li>
+    </ul>
+
+    <h2>3. Real-Time Generation (Event Listeners) ⚡</h2>
+    <p>How does the QR code update instantly while you type? We use <strong>Event Listeners</strong>.</p>
+    <pre>
+inputText.addEventListener('input', updateQRCode);
+qrSize.addEventListener('input', updateQRCode);</pre>
+    <p>An <strong>Event Listener</strong> is like a guard watching the input boxes. Every time the user presses a key, deletes characters, or changes the size number, the guard shouts: <em>"Hey, the input changed! Run the <code>updateQRCode</code> function right now!"</em>. This changes the image source instantly, and the browser displays the new QR code.</p>
+
+    <h2>4. How Downloading Works 💾</h2>
+    <p>The app offers two ways to save the QR code depending on the dropdown selection: <strong>PDF Document</strong> or <strong>PNG Image</strong>.</p>
+
+    <h3>📄 A. Downloading as a PDF Document</h3>
+    <p>When the user selects PDF and clicks the button, JavaScript triggers: <code>window.print();</code></p>
+    <p>This command opens the standard browser print dialog. To make this act like a PDF download, we added special **print styles** to `index.css`:</p>
+    <pre>
+@media print {
+  body * { visibility: hidden; }
+  .qr-preview-box, .qr-image-container, #qrImg { visibility: visible; }
+  .qr-preview-box { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); }
+}</pre>
+    <ul>
+      <li><code>@media print</code>: This CSS rule runs <strong>only</strong> when you print the page or save it as a PDF.</li>
+      <li><code>body * { visibility: hidden; }</code>: Hides everything on the page (inputs, buttons, titles, dark backgrounds).</li>
+      <li><code>visibility: visible</code>: Forces only the QR code preview to remain visible.</li>
+      <li><code>position: absolute; left: 50%...</code>: Centers the QR code perfectly on the sheet of paper.</li>
+    </ul>
+    <p>As a result, in the print preview dialog, you see a clean, white sheet with only the QR code centered, ready to be printed or saved directly as a PDF!</p>
+
+    <h3>🖼️ B. Downloading as a PNG Image</h3>
+    <p>Since the QR code is generated by an external server (`api.qrserver.com`), security boundaries inside browsers block simple direct file downloads (this is called cross-origin restriction).</p>
+    <p>To make the download simple and cross-origin safe without using complex binary fetches, JavaScript triggers:</p>
+    <pre>
+window.open(qrImg.src, '_blank');</pre>
+    <p>This line opens the QR code image directly in a new browser tab. Once it's open, the user can easily right-click on the image and click <strong>"Save Image As..."</strong> to download it to their device. This is highly reliable, uses only one line of code, and is very simple to explain!</p>
+
+    <div class="footer">
+      <p>MetaQR Code Generator Project Study Guide • 2026</p>
+    </div>
+  </div>
+
+</body>
+</html>
